@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Sky
+  - Combat
+  - Player Attack
   layers:
   - Default
   - TransparentFX

@@ -7,21 +7,24 @@ public class CharacterController : MonoBehaviour
     public float HSpeed;
     public float VSpeed;
     public float jumpTime1, jumpTime2, jumpTimeHolder, JumpSpeed;
+    public float attackTime, attacktimeHolder;
 
-
-    
+    public static bool isInCombat;
 
     public Rigidbody2D rb;
 
     public BoxCollider2D BC;
 
-    public bool jumping;
+    public bool jumping, isAttacking;
+    //public bool isInCombat;
 
-    public GameObject SkyBlock;
+    public GameObject SkyBlock, meleeAttack;
 
     // Start is called before the first frame update
     void Start()
     {
+        attacktimeHolder = attackTime;
+        isInCombat = false;
         jumpTimeHolder = jumpTime1;
         jumpTime2 = jumpTime1;
     }
@@ -42,6 +45,24 @@ public class CharacterController : MonoBehaviour
         if (rb.velocity.x > 0)
         {
             gameObject.transform.localScale = new Vector3(1,1, 1);
+        }
+
+        if (Input.GetButtonDown("Fire1") && isAttacking == false)
+        {
+            isAttacking = true;
+        }
+
+        if(isAttacking == true)
+        {
+            meleeAttack.SetActive(true);
+            attackTime -= Time.deltaTime;
+        }
+
+        if(attackTime < 0)
+        {
+            isAttacking = false;
+            meleeAttack.SetActive(false);
+            attackTime = attacktimeHolder;
         }
 
         if (Input.GetButtonDown("Jump"))
@@ -79,6 +100,16 @@ public class CharacterController : MonoBehaviour
         
     }
 
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Combat")
+        {
+            isInCombat = true;
+        }
+    }
+
    
+    
 
 }
